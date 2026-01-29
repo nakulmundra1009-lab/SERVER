@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Aiveno AI</title>
+  <style>
+    body { background:#0f172a; color:white; font-family:Arial; padding:20px; }
+    #chat { max-width:600px; margin:auto; }
+    input, button { padding:10px; margin-top:10px; width:100%; }
+  </style>
+</head>
+<body>
+  <div id="chat">
+    <h1>Aiveno AI</h1>
+    <div id="output">Say hello to Aiveno...</div>
+    <input id="input" placeholder="Ask Aiveno anything..." />
+    <button onclick="send()">Send</button>
+  </div>
+
+  <script>
+    async function send() {
+      const msg = document.getElementById("input").value;
+      document.getElementById("output").innerText = "Aiveno is thinking...";
+      const res = await fetch("/.netlify/functions/aiveno", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+      const data = await res.json();
+      document.getElementById("output").innerText = data.reply;
+    }
+  </script>
+</body>
+</html>
